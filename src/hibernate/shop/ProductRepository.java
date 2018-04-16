@@ -56,6 +56,8 @@ public class ProductRepository {
         }
     }
 
+    // random comment
+
     public static Optional<Product> findOneById(Long id){
         Session session = null;
         try{
