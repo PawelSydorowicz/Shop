@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @EqualsAndHashCode(exclude = {"cartDetailSet", "user"})
 
-public class Cart implements Serializable {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,17 @@ public class Cart implements Serializable {
     public void addCartDetail(CartDetail cartDetail){
         cartDetail.setCart(this);
         cartDetailSet.add(cartDetail);
+    }
+
+    public BigDecimal getTotalGrossPrice(){
+        BigDecimal totalGross = cartDetailSet
+                .stream()
+                .map(cd -> cd.getAmount()
+                        .multiply(cd.getPrice()
+                        .getGrossPrice()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalGross;
     }
 
     public BigDecimal getTotalNettoPrice(){
